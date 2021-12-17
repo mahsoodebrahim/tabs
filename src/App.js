@@ -6,7 +6,7 @@ const url = "https://course-api.com/react-tabs-project";
 function App() {
   const [loading, setLoading] = useState(true);
   const [jobs, setJobs] = useState([]);
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
 
   const fetchJobs = async () => {
     setLoading(true);
@@ -14,8 +14,8 @@ function App() {
     const response = await fetch(url, { mode: "cors" });
     const newJobs = await response.json();
 
-    setLoading(false);
     setJobs(newJobs);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -38,8 +38,19 @@ function App() {
         <div className="underline"></div>
       </div>
       <div className="jobs-center">
-        {/* btn container */}
-        {/* jobs info */}
+        <div className="btn-container">
+          {jobs.map((item, index) => {
+            return (
+              <button
+                key={item.id}
+                onClick={() => setValue(index)}
+                className={`job-btn ${index === value && "active-btn"}`}
+              >
+                {item.company}
+              </button>
+            );
+          })}
+        </div>
         <article className="job-info">
           <h3>{title}</h3>
           <h4>{company}</h4>
@@ -47,7 +58,7 @@ function App() {
           {duties.map((duty, index) => {
             return (
               <div className="job-desc" key={index}>
-                <FaAngleDoubleRight className="job-icon"></FaAngleDoubleRight>
+                <FaAngleDoubleRight className="job-icon" />
                 <p>{duty}</p>
               </div>
             );
